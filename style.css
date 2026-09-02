@@ -5,16 +5,20 @@
   padding: 0;
 }
 
+
 :root {
-  --bg-light: #F9F6F0;
+  /*--bg-light: #F9F6F0;*/
+  --bg-light: #fdfcf7;
   --bg-dark: #D3C2B5;
   --bg-subtle: #EDE4DC;
   --text-color: #5A4E46;
   --text-dark: #3D332D;
   --btn-bg: #BDA698;
   --btn-text: #FFFFFF;
-  --font-heading: 'Georgia', 'Times New Roman', serif;
-  --font-body: 'Helvetica Neue', Arial, sans-serif;
+  /*--font-heading: 'Georgia', 'Times New Roman', serif;*/
+  --font-heading: 'Fraunces', serif;
+  /*--font-body: 'Helvetica Neue', Arial, sans-serif;*/
+  --font-body: 'Manrope', Arial, sans-serif;
 }
 
 body {
