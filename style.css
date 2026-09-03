@@ -84,16 +84,21 @@ p { font-size: 0.95rem; margin-bottom: 20px; }
   color: var(--btn-text);
 }
 
-.btn-secondary{
+.btn-secondary {
   background-color: #FDFCF7;
-  border-color: 1px solid #e7e0d9;
+  border: 1px solid #e7e0d9;
   color: #2c211d;
-  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-              rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-              rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-              rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-              rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
-              rgba(0, 0, 0, 0.1) 0px 1px 2px -1px,
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  
+  /* Buone pratiche aggiuntive per un bottone */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Stato al passaggio del mouse */
+.btn-secondary:hover {
+  background-color: #f7f3eb;
+  border-color: #dcd3c8;
 }
 
 .btn-dark {
