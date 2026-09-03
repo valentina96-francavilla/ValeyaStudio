@@ -11,8 +11,10 @@
   --bg-light: #fdfcf7;
   --bg-dark: #D3C2B5;
   --bg-subtle: #EDE4DC;
-  --text-color: #5A4E46;
-  --text-dark: #3D332D;
+  /*--text-color: #5A4E46;*/
+  --text-color: #766962;
+  /*--text-dark: #3D332D;*/
+  --text-dark:#2c211d;
   --btn-bg: #BDA698;
   --btn-text: #FFFFFF;
   /*--font-heading: 'Georgia', 'Times New Roman', serif;*/
@@ -44,7 +46,7 @@ img {
 h1, h2, h3 {
   font-family: var(--font-heading);
   color: var(--text-dark);
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: 15px;
 }
 
@@ -60,7 +62,7 @@ p { font-size: 0.95rem; margin-bottom: 20px; }
   text-decoration: none;
   font-size: 0.85rem;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   border-radius: 2px;
   transition: opacity 0.3s ease;
 }
@@ -69,6 +71,11 @@ p { font-size: 0.95rem; margin-bottom: 20px; }
 
 .btn-primary, .btn-secondary {
   background-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.btn-primary{
+  background-color: #a24f53;
   color: var(--btn-text);
 }
 
