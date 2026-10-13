@@ -401,5 +401,84 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
 
   </footer>
 
+  <!-- CONTACT FORM MODAL -->
+  <div class="contact-modal" id="contactModal" aria-hidden="true">
+    <div class="contact-modal-backdrop" data-close-contact></div>
+    <section class="contact-modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <button type="button" class="contact-modal-close" aria-label="Chiudi" data-close-contact>&times;</button>
+      <p class="small-label">PARLIAMONE</p>
+      <h2 id="contactModalTitle">Come posso aiutarti?</h2>
+      <p class="contact-modal-intro">Raccontami cosa ti serve: ti ricontatterò per capire insieme la soluzione più adatta.</p>
+      <form id="contactForm">
+        <label for="contactName">Nome *</label>
+        <input id="contactName" name="nome" autocomplete="name" required>
+        <label for="businessName">Nome della tua attività <span>(facoltativo)</span></label>
+        <input id="businessName" name="attivita" autocomplete="organization">
+        <label for="contactMethod">WhatsApp o email *</label>
+        <input id="contactMethod" name="recapito" placeholder="Email o numero WhatsApp" required>
+        <label for="contactNeed">Di cosa hai bisogno? *</label>
+        <select id="contactNeed" name="richiesta" required>
+          <option value="">Scegli un'opzione</option>
+          <option>Sito web o landing page</option>
+          <option>Prenotazioni o richieste online</option>
+          <option>Migliorare o sistemare il mio sito</option>
+          <option>Altro / devo ancora capire</option>
+        </select>
+        <label for="contactMessage">Raccontami qualcosa in più <span>(facoltativo)</span></label>
+        <textarea id="contactMessage" name="messaggio" rows="3" placeholder="Descrivi brevemente la tua esigenza..."></textarea>
+        <label class="privacy-consent" for="privacyConsent">
+          <input id="privacyConsent" name="privacy" type="checkbox" required>
+          <span>Ho letto l'informativa sulla privacy. *</span>
+        </label>
+        <p class="privacy-note">Prima di pubblicare il modulo, collega “informativa sulla privacy” alla tua informativa effettiva.</p>
+        <button class="button button-primary contact-submit" type="submit">Invia la richiesta <span>↗</span></button>
+        <p class="contact-form-note">Si aprirà la tua app email con la richiesta già compilata, da inviare a hello@valeyastudio.it.</p>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById('contactModal');
+      const openButton = document.getElementById('openContactForm');
+      const form = document.getElementById('contactForm');
+      const closeButtons = modal.querySelectorAll('[data-close-contact]');
+      function openModal() {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        document.getElementById('contactName').focus();
+      }
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        openButton.focus();
+      }
+      openButton.addEventListener('click', openModal);
+      closeButtons.forEach(function (button) { button.addEventListener('click', closeModal); });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const data = new FormData(form);
+        const body = [
+          'Nuova richiesta dal sito Valeya Studio',
+          '',
+          'Nome: ' + data.get('nome'),
+          'Attività: ' + (data.get('attivita') || 'Non indicata'),
+          'Recapito: ' + data.get('recapito'),
+          'Richiesta: ' + data.get('richiesta'),
+          'Messaggio: ' + (data.get('messaggio') || 'Non indicato')
+        ].join('\n');
+        window.location.href = 'mailto:hello@valeyastudio.it?subject=' +
+          encodeURIComponent('Nuova richiesta dal sito Valeya Studio') +
+          '&body=' + encodeURIComponent(body);
+      });
+    })();
+  </script>
+
 </body>
 </html>
