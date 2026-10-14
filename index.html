@@ -411,7 +411,7 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
       <p class="small-label">PARLIAMONE</p>
       <h2 id="contactModalTitle">Come posso aiutarti?</h2>
       <p class="contact-modal-intro">Raccontami cosa ti serve: ti ricontatterò per capire insieme la soluzione più adatta.</p>
-      <form id="contactForm" action="/api/contact" method="POST">
+      <form id="contactForm" action="https://valeya-contact-api.vercel.app/api/contact" method="POST">
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
         <label for="contactName">Nome *</label>
         <input id="contactName" name="nome" autocomplete="name" required>
@@ -477,7 +477,7 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
         status.textContent = '';
         status.classList.remove('is-error', 'is-success');
         try {
-          const response = await fetch('/api/contact', {
+          const response = await fetch('https://valeya-contact-api.vercel.app/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
