@@ -482,7 +482,16 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
           });
-          const result = await response.json();
+          const responseText = await response.text();
+          let result;
+          try {
+            result = JSON.parse(responseText);
+          } catch {
+            if (responseText.trim().startsWith('<')) {
+              throw new Error('Il servizio di invio non è raggiungibile (risposta HTML invece di JSON). Verifica che l’endpoint /api/contact sia stato pubblicato su Vercel e riprova.');
+            }
+            throw new Error('Risposta del server non valida. Riprova tra poco.');
+          }
           if (!response.ok || !result.ok) throw new Error(result.message || 'Invio non riuscito.');
           form.innerHTML = '<div class="contact-success" role="status"><p class="small-label">RICHIESTA INVIATA</p><h3>Grazie, la tua richiesta è stata ricevuta!</h3><p>Ti risponderemo appena possibile. Ti abbiamo inviato una email con il riepilogo dei dati inseriti.</p><button type="button" class="button button-primary" id="closeContactSuccess">Chiudi</button></div>';
           document.getElementById('closeContactSuccess').addEventListener('click', closeModal);
