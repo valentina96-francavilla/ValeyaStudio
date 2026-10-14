@@ -1,6 +1,26 @@
 export default async function handler(req, res) {
+  const allowedOrigins = new Set([
+    "https://valeyastudio.it",
+    "https://www.valeyastudio.it"
+  ]);
+  const origin = req.headers.origin;
+
+  res.setHeader("Vary", "Origin");
+  if (origin && allowedOrigins.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+  } else if (origin) {
+    return res.status(403).json({ ok: false, message: "Origine non autorizzata." });
+  }
+
+  if (req.method === "OPTIONS") {
+    res.setHeader("Allow", "POST, OPTIONS");
+    return res.status(204).end();
+  }
+
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+    res.setHeader("Allow", "POST, OPTIONS");
     return res.status(405).json({ ok: false, message: "Metodo non consentito." });
   }
 
