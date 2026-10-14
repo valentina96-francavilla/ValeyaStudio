@@ -411,16 +411,16 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
       <p class="small-label">PARLIAMONE</p>
       <h2 id="contactModalTitle">Come posso aiutarti?</h2>
       <p class="contact-modal-intro">Raccontami cosa ti serve: ti ricontatterò per capire insieme la soluzione più adatta.</p>
-      <form id="contactForm" action="https://formsubmit.co/hello@valeyastudio.it" method="POST">
-        <input type="hidden" name="_subject" value="Nuova richiesta dal sito Valeya Studio">
-        <input type="hidden" name="_template" value="table">
+      <form id="contactForm" action="/api/contact" method="POST">
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
         <label for="contactName">Nome *</label>
         <input id="contactName" name="nome" autocomplete="name" required>
         <label for="businessName">Nome della tua attività <span>(facoltativo)</span></label>
         <input id="businessName" name="attivita" autocomplete="organization">
-        <label for="contactMethod">WhatsApp o email *</label>
-        <input id="contactMethod" name="recapito" placeholder="Email o numero WhatsApp" required>
+        <label for="contactEmail">La tua email *</label>
+        <input id="contactEmail" name="email" type="email" autocomplete="email" placeholder="nome@esempio.it" required>
+        <label for="contactWhatsapp">WhatsApp <span>(facoltativo)</span></label>
+        <input id="contactWhatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="Il tuo numero, se preferisci">
         <label for="contactNeed">Di cosa hai bisogno? *</label>
         <select id="contactNeed" name="richiesta" required>
           <option value="">Scegli un'opzione</option>
@@ -437,7 +437,8 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
         </label>
         
         <button class="button button-primary contact-submit" type="submit">Invia la richiesta <span>↗</span></button>
-        <p class="contact-form-note">La richiesta verrà inviata a hello@valeyastudio.it.</p>
+        <p class="contact-form-note">Riceverai una conferma via email con il riepilogo della richiesta.</p>
+        <p id="contactFormStatus" class="contact-form-note" role="status" aria-live="polite"></p>
       </form>
     </section>
   </div>
@@ -464,6 +465,33 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
       closeButtons.forEach(function (button) { button.addEventListener('click', closeModal); });
       document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const submitButton = form.querySelector('button[type="submit"]');
+        const status = document.getElementById('contactFormStatus');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Invio in corso…';
+        status.textContent = '';
+        status.classList.remove('is-error', 'is-success');
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+          });
+          const result = await response.json();
+          if (!response.ok || !result.ok) throw new Error(result.message || 'Invio non riuscito.');
+          form.innerHTML = '<div class="contact-success" role="status"><p class="small-label">RICHIESTA INVIATA</p><h3>Grazie, la tua richiesta è stata ricevuta!</h3><p>Ti risponderemo appena possibile. Ti abbiamo inviato una email con il riepilogo dei dati inseriti.</p><button type="button" class="button button-primary" id="closeContactSuccess">Chiudi</button></div>';
+          document.getElementById('closeContactSuccess').addEventListener('click', closeModal);
+        } catch (error) {
+          status.textContent = error.message || 'Non siamo riusciti a inviare la richiesta. Riprova tra poco.';
+          status.classList.add('is-error');
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonText;
+        }
       });
 
     })();
