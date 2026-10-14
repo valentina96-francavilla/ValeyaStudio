@@ -1051,3 +1051,20 @@ body.modal-open { overflow: hidden; }
   .contact-modal { padding: 10px; }
   .contact-modal-panel { max-height: 94vh; padding: 25px 20px; }
 }
+
+
+.contact-submit:disabled { opacity: .65; cursor: wait; }
+#contactFormStatus.is-error { color: #a12626; font-size: 12px; }
+.contact-success h3 {
+  margin: 0 0 16px;
+  font-family: var(--serif);
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+.contact-success p:not(.small-label) {
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.contact-success .button { margin-top: 18px; }
