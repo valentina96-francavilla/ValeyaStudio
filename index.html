@@ -477,7 +477,7 @@ Sito o landing page per la tua attività: chiaro, da telefono, con un pulsante p
         status.textContent = '';
         status.classList.remove('is-error', 'is-success');
         try {
-          const response = await fetch('https://valeyastudio.vercel.app/api/contact', {
+          const response = await fetch('https://valeyastudio-git-main-personal-9315.vercel.app/api/contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
