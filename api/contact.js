@@ -68,11 +68,11 @@ export default async function handler(req, res) {
     <p style="font-size:14px;line-height:1.8">È arrivata una richiesta dal modulo di contatto di Valeya Studio.</p>
     <table role="presentation" style="width:100%;border-collapse:collapse;margin-top:22px">${rows}</table>`);
 
-  const customerHtml = shell("RICHIESTA RICEVUTA", "Grazie, ${esc(safeName)}!", `
-    <p style="font-size:14px;line-height:1.8">La tua richiesta è stata ricevuta correttamente. Ti risponderemo appena possibile.</p>
+  const customerHtml = shell("RICHIESTA RICEVUTA", "Grazie, " + esc(safeName) + "!", `
+    <p style="font-size:14px;line-height:1.8">La tua richiesta è stata ricevuta correttamente.</p>
     <h2 style="margin:28px 0 12px;font-family:Georgia,serif;font-size:22px;font-weight:normal">Ecco cosa hai richiesto</h2>
     <table role="presentation" style="width:100%;border-collapse:collapse">${rows}</table>
-    <p style="margin-top:24px;font-size:13px;line-height:1.8;color:#77736d">Grazie per aver contattato Valeya Studio.</p>`);
+    <p style="margin-top:24px;font-size:13px;line-height:1.8;color:#77736d">Verrai ricontattato quanto prima possibile.</p>`);
 
   async function sendEmail(payload) {
     const response = await fetch("https://api.resend.com/emails", {
