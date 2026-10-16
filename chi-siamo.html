@@ -61,7 +61,7 @@
       "founder": {
         "@type": "Person",
         "name": "Valentina Francavilla",
-        "jobTitle": "Digital Project Manager e designer digitale",
+        "jobTitle": "Digital Project Manager e designer digitale"
       }
     }
   }
@@ -129,7 +129,7 @@
       <p class="about-eyebrow">Il prossimo passo</p>
       <h2>Hai un progetto in mente?</h2>
       <p>Raccontami cosa vorresti migliorare o realizzare. Partiremo dalle tue esigenze per capire quale soluzione ha davvero senso per la tua attività.</p>
-      <a href="/?openContactForm=1#contatti" class="button button-primary">Parliamone <span>↗</span></a>
+      <button type="button" class="button button-primary" id="openContactForm">Parliamone <span>↗</span></button>
     </section>
 
     <a class="about-back" href="/">← Torna alla homepage di Valeya Studio</a>
@@ -150,5 +150,108 @@
       <span>DIGITAL DESIGN · WEB · PRODUCTS</span>
     </div>
   </footer>
+
+  <!-- CONTACT FORM MODAL -->
+  <div class="contact-modal" id="contactModal" aria-hidden="true">
+    <div class="contact-modal-backdrop" data-close-contact></div>
+    <section class="contact-modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <button type="button" class="contact-modal-close" aria-label="Chiudi" data-close-contact>&times;</button>
+      <p class="small-label">PARLIAMONE</p>
+      <h2 id="contactModalTitle">Come posso aiutarti?</h2>
+      <p class="contact-modal-intro">Raccontami cosa ti serve: ti ricontatterò per capire insieme la soluzione più adatta.</p>
+      <form id="contactForm" action="https://valeya-contact-api.vercel.app/api/contact" method="POST">
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+        <label for="contactName">Nome *</label>
+        <input id="contactName" name="nome" autocomplete="name" required>
+        <label for="businessName">Nome della tua attività <span>(facoltativo)</span></label>
+        <input id="businessName" name="attivita" autocomplete="organization">
+        <label for="contactEmail">La tua email *</label>
+        <input id="contactEmail" name="email" type="email" autocomplete="email" placeholder="nome@esempio.it" required>
+        <label for="contactWhatsapp">WhatsApp <span>(facoltativo)</span></label>
+        <input id="contactWhatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="Il tuo numero, se preferisci">
+        <label for="contactNeed">Di cosa hai bisogno? *</label>
+        <select id="contactNeed" name="richiesta" required>
+          <option value="">Scegli un'opzione</option>
+          <option>Sito web o landing page</option>
+          <option>Prenotazioni o richieste online</option>
+          <option>Migliorare o sistemare il mio sito</option>
+          <option>Altro / devo ancora capire</option>
+        </select>
+        <label for="contactMessage">Raccontami qualcosa in più <span>(facoltativo)</span></label>
+        <textarea id="contactMessage" name="messaggio" rows="3" placeholder="Descrivi brevemente la tua esigenza..."></textarea>
+        <label class="privacy-consent" for="privacyConsent">
+          <input id="privacyConsent" name="privacy" type="checkbox" required>
+          <span>Ho letto l' <a href="privacy.html" target="_blank" rel="noopener">informativa sulla privacy</a>. *</span>
+        </label>
+        
+        <button class="button button-primary contact-submit" type="submit">Invia la richiesta <span>↗</span></button>
+        <p class="contact-form-note">Riceverai una conferma via email con il riepilogo della richiesta.</p>
+        <p id="contactFormStatus" class="contact-form-note" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById('contactModal');
+      const openButton = document.getElementById('openContactForm');
+      const form = document.getElementById('contactForm');
+      const closeButtons = modal.querySelectorAll('[data-close-contact]');
+      function openModal() {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        document.getElementById('contactName').focus();
+      }
+      function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        document.getElementById('openContactForm').focus();
+      }
+      openButton.addEventListener('click', openModal);
+      closeButtons.forEach(function (button) { button.addEventListener('click', closeModal); });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const submitButton = form.querySelector('button[type="submit"]');
+        const status = document.getElementById('contactFormStatus');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Invio in corso…';
+        status.textContent = '';
+        status.classList.remove('is-error', 'is-success');
+        try {
+          const response = await fetch('https://valeya-contact-api.vercel.app/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+          });
+          const responseText = await response.text();
+          let result;
+          try {
+            result = JSON.parse(responseText);
+          } catch {
+            if (responseText.trim().startsWith('<')) {
+              throw new Error('Il servizio di invio non è raggiungibile (risposta HTML invece di JSON). Verifica che l’endpoint /api/contact sia stato pubblicato su Vercel e riprova.');
+            }
+            throw new Error('Risposta del server non valida. Riprova tra poco.');
+          }
+          if (!response.ok || !result.ok) throw new Error(result.message || 'Invio non riuscito.');
+          form.innerHTML = '<div class="contact-success" role="status"><p class="small-label">RICHIESTA INVIATA</p><h3>Grazie, la tua richiesta è stata ricevuta!</h3><p>Ti risponderemo appena possibile. Ti abbiamo inviato una email con il riepilogo dei dati inseriti.</p><button type="button" class="button button-primary" id="closeContactSuccess">Chiudi</button></div>';
+          document.getElementById('closeContactSuccess').addEventListener('click', closeModal);
+        } catch (error) {
+          status.textContent = error.message || 'Non siamo riusciti a inviare la richiesta. Riprova tra poco.';
+          status.classList.add('is-error');
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonText;
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>
