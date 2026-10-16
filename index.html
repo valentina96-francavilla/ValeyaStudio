@@ -67,7 +67,7 @@
 <nav class="nav-links">
   <a href="#servizi">Servizi</a>
   <a href="#progetto">Lookera</a>
-  <a href="#studio">Chi sono</a>
+  <a href="/chi-siamo.html">Chi sono</a>
   <a href="#contatti">Contatti</a>
 </nav>
 
@@ -470,6 +470,7 @@
         openButton.focus();
       }
       openButton.addEventListener('click', openModal);
+      if (new URLSearchParams(window.location.search).get('openContactForm') === '1') openModal();
       closeButtons.forEach(function (button) { button.addEventListener('click', closeModal); });
       document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
