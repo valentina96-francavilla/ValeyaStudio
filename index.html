@@ -41,15 +41,7 @@
   </script>
 
   
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QCB1XJG07E"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  
-    gtag('config', 'G-QCB1XJG07E');
-  </script>
+  <!-- Google Analytics viene caricato solo dopo il consenso alle statistiche. -->
 </head>
 
 <body>
@@ -396,6 +388,10 @@
       Privacy Policy
     </a>
 
+    <a href="#cookie-preferences">
+      Preferenze cookie
+    </a>
+
   </div>
 
 </div>
@@ -512,6 +508,72 @@
         }
       });
 
+    })();
+  </script>
+
+
+  <!-- Cookie consent: GA4 remains disabled until the visitor accepts statistics. -->
+  <aside id="cookieConsent" class="cookie-consent" role="dialog" aria-live="polite" aria-labelledby="cookieConsentTitle" hidden>
+    <div class="cookie-consent-copy">
+      <p id="cookieConsentTitle">La tua privacy, la tua scelta</p>
+      <p>Usiamo cookie tecnici necessari al funzionamento del sito. Con il tuo consenso, Google Analytics ci aiuta a capire come viene visitato il sito. Puoi accettare o rifiutare le statistiche; la scelta non limita la navigazione. <a href="/privacy.html">Leggi l'informativa</a>.</p>
+    </div>
+    <div class="cookie-consent-actions">
+      <button type="button" id="cookieReject" class="cookie-button cookie-button-secondary">Rifiuta statistiche</button>
+      <button type="button" id="cookieAccept" class="cookie-button cookie-button-primary">Accetta statistiche</button>
+    </div>
+  </aside>
+  <style>
+    .cookie-consent{position:fixed;z-index:9999;left:20px;right:20px;bottom:20px;max-width:960px;margin:0 auto;padding:22px 24px;background:#fffdf9;color:#26231f;border:1px solid #d8cfc2;box-shadow:0 12px 45px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;gap:24px;font-family:Manrope,Arial,sans-serif}
+    .cookie-consent[hidden]{display:none}
+    .cookie-consent-copy{max-width:620px}
+    .cookie-consent-copy p:first-child{font-family:Fraunces,Georgia,serif;font-size:21px;margin:0 0 7px}
+    .cookie-consent-copy p:nth-child(2){font-size:12px;line-height:1.65;margin:0;color:#514d47}
+    .cookie-consent-copy a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+    .cookie-consent-actions{display:flex;gap:9px;flex-wrap:wrap;flex-shrink:0}
+    .cookie-button{font:600 11px Manrope,Arial,sans-serif;letter-spacing:.02em;padding:12px 14px;border:1px solid #26231f;cursor:pointer}
+    .cookie-button-primary{background:#26231f;color:#fff}
+    .cookie-button-secondary{background:transparent;color:#26231f}
+    .cookie-button:focus-visible{outline:3px solid #b79b75;outline-offset:3px}
+    @media(max-width:680px){.cookie-consent{left:10px;right:10px;bottom:10px;padding:18px;display:block}.cookie-consent-actions{margin-top:14px}.cookie-button{flex:1}.cookie-consent-copy p:first-child{font-size:19px}}
+  </style>
+  <script>
+    (function () {
+      const consentKey = 'valeya_analytics_consent_v1';
+      const banner = document.getElementById('cookieConsent');
+      function loadAnalytics() {
+        if (window.__valeyaAnalyticsLoaded) return;
+        window.__valeyaAnalyticsLoaded = true;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){ window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', 'G-QCB1XJG07E');
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-QCB1XJG07E';
+        document.head.appendChild(script);
+      }
+      function saveChoice(choice) {
+        try { localStorage.setItem(consentKey, choice); } catch (e) {}
+        banner.hidden = true;
+        if (choice === 'accepted') loadAnalytics();
+      }
+      let savedChoice = null;
+      try { savedChoice = localStorage.getItem(consentKey); } catch (e) {}
+      if (savedChoice === 'accepted') {
+        loadAnalytics();
+      } else if (savedChoice !== 'rejected') {
+        banner.hidden = false;
+      }
+      document.getElementById('cookieAccept').addEventListener('click', function () { saveChoice('accepted'); });
+      document.getElementById('cookieReject').addEventListener('click', function () { saveChoice('rejected'); });
+      document.querySelectorAll('a[href="#cookie-preferences"]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+          event.preventDefault();
+          banner.hidden = false;
+          document.getElementById('cookieAccept').focus();
+        });
+      });
     })();
   </script>
 
