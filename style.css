@@ -1274,3 +1274,24 @@ body.modal-open { overflow: hidden; }
     justify-content: center;
   }
 }
+
+/* APPROCCIO VALEYA · ANALISI, PROGETTAZIONE, SVILUPPO */
+.fit-heading h2 {
+  max-width: 760px;
+}
+.fit-card {
+  display: flex;
+  flex-direction: column;
+}
+.fit-card p {
+  font-size: 13px;
+}
+.fit-card-highlight h3 {
+  color: white;
+}
+@media (max-width: 800px) {
+  .fit-heading h2 {
+    font-size: clamp(39px, 11vw, 62px);
+    letter-spacing: -2px;
+  }
+}
