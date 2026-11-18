@@ -1152,3 +1152,125 @@ body.modal-open { overflow: hidden; }
   .featured-secondary { margin-top: 65px; }
   .project-note { padding: 23px; }
 }
+
+
+/* POSITIONING · WHEN CUSTOM SOFTWARE MAKES SENSE */
+.fit-section {
+  padding: 110px max(30px, calc((100vw - 1180px) / 2));
+  background: var(--soft);
+}
+.fit-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 45px;
+  margin: 55px 0 48px;
+}
+.fit-heading h2 {
+  font-family: var(--serif);
+  font-size: clamp(46px, 6vw, 76px);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -3px;
+}
+.fit-heading h2 em {
+  font-weight: 400;
+}
+.fit-heading > p {
+  max-width: 350px;
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.fit-card {
+  min-height: 280px;
+  padding: 30px;
+  background: rgba(255,255,255,.48);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.fit-card-highlight {
+  background: var(--black);
+  color: white;
+}
+.fit-kicker {
+  display: block;
+  min-height: 30px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.fit-card-highlight .fit-kicker {
+  color: #d9a4a1;
+}
+.fit-card h3 {
+  margin: 27px 0 14px;
+  font-family: var(--serif);
+  font-size: clamp(25px, 2.6vw, 34px);
+  font-weight: 500;
+  line-height: 1.12;
+}
+.fit-card p {
+  color: var(--gray);
+  font-size: 12px;
+  line-height: 1.85;
+}
+.fit-card-highlight p {
+  color: #c5c0b8;
+}
+.fit-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 35px;
+  margin-top: 36px;
+}
+.fit-bottom > div {
+  max-width: 610px;
+}
+.fit-bottom-label {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+}
+.fit-bottom > div > p:last-child {
+  color: var(--gray);
+  font-size: 13px;
+  line-height: 1.8;
+}
+@media (max-width: 800px) {
+  .fit-heading {
+    display: block;
+    margin: 38px 0 30px;
+  }
+  .fit-heading > p {
+    margin-top: 22px;
+  }
+  .fit-grid {
+    grid-template-columns: 1fr;
+  }
+  .fit-card {
+    min-height: auto;
+    padding: 25px;
+  }
+  .fit-card h3 {
+    margin-top: 17px;
+  }
+  .fit-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .fit-bottom .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
